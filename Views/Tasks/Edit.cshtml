@@ -1,0 +1,19 @@
+@model dynamic
+@{
+    Layout = "_Layout";
+}
+
+<h2>Editar Tarea</h2>
+<form asp-action="Edit" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="Id" value="@Model?.Id" />
+    <div>
+        <label for="Title">Título</label>
+        <input id="Title" name="Title" value="@Model?.Title" />
+    </div>
+    <div>
+        <label for="Description">Descripción</label>
+        <textarea id="Description" name="Description">@Model?.Description</textarea>
+    </div>
+    <button type="submit">Guardar</button>
+</form>

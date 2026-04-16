@@ -1,0 +1,18 @@
+@model dynamic
+@{
+    Layout = "_Layout";
+}
+
+<h2>Crear Tarea</h2>
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <label for="Title">Título</label>
+        <input id="Title" name="Title" />
+    </div>
+    <div>
+        <label for="Description">Descripción</label>
+        <textarea id="Description" name="Description"></textarea>
+    </div>
+    <button type="submit">Guardar</button>
+</form>

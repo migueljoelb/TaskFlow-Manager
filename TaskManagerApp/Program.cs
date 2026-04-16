@@ -1,40 +1,34 @@
 using TaskManagerApp.Data;
+using TaskManagerApp.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 👇 Agrega estas líneas
+// Base de datos
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")
-    )
-);
+        builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Registrar services
+builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<TaskService>();
+
+// Sesiones
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+});
 
 builder.Services.AddControllersWithViews();
 
-// ... resto del archivo
-
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
-
-app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseRouting();
-
-app.UseAuthorization();
-
-app.MapStaticAssets();
-
+app.UseSession(); // importante: antes de MapControllerRoute
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
-    .WithStaticAssets();
-
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

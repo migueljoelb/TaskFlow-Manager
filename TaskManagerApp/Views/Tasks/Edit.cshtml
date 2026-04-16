@@ -1,0 +1,48 @@
+﻿@model TaskManagerApp.ViewModels.TaskViewModel
+@{
+    ViewData["Title"] = "Editar Tarea";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h4 class="mb-4">✏️ Editar Tarea</h4>
+
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label">Título</label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label">Descripción</label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Status" class="form-label">Estado</label>
+                        <select asp-for="Status"
+                                asp-items="Html.GetEnumSelectList<TaskManagerApp.Models.TaskStatus>()"
+                                class="form-select">
+                        </select>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary w-50">
+                            Guardar Cambios
+                        </button>
+                        <a asp-action="Index" class="btn btn-outline-secondary w-50">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

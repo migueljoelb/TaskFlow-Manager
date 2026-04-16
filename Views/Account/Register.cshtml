@@ -1,0 +1,21 @@
+@{
+    Layout = "_Layout";
+}
+
+<h2>Registro</h2>
+<form asp-action="Register" method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <label for="Email">Email</label>
+        <input id="Email" name="Email" type="email" />
+    </div>
+    <div>
+        <label for="Password">Contraseña</label>
+        <input id="Password" name="Password" type="password" />
+    </div>
+    <div>
+        <label for="ConfirmPassword">Confirmar contraseña</label>
+        <input id="ConfirmPassword" name="ConfirmPassword" type="password" />
+    </div>
+    <button type="submit">Registrarse</button>
+</form>

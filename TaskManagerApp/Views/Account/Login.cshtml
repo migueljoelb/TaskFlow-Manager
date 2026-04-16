@@ -1,0 +1,43 @@
+﻿@model TaskManagerApp.ViewModels.LoginViewModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-4">
+        <div class="card shadow">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4">📋 Task Manager</h3>
+                <h5 class="text-center text-muted mb-4">Iniciar sesión</h5>
+
+                <form asp-action="Login" method="post">
+                    @* Muestra errores generales *@
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label">Email</label>
+                        <input asp-for="Email" class="form-control" placeholder="tu@email.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Contraseña</label>
+                        <input asp-for="Password" class="form-control" placeholder="••••••" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                        Ingresar
+                    </button>
+                </form>
+
+                <hr />
+                <p class="text-center mb-0">
+                    ¿No tienes cuenta?
+                    <a asp-action="Register">Regístrate aquí</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
