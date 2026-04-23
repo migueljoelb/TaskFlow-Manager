@@ -1,0 +1,35 @@
+Run these checks to debug the 404 "Tarea no encontrada":
+
+1) Confirm DB contents (SQL Server / SSMS / Azure Data Studio):
+   SELECT Id, FullName, Email FROM Users;
+   SELECT Id, UserId, Title, Description FROM Tasks WHERE Id = 1;
+
+2) Confirm connection string used by the running app:
+   - Open: TaskManagerApp/appsettings.json and TaskManagerApp/appsettings.Development.json
+   - Confirm the ConnectionStrings:DefaultConnection value.
+
+3) Confirm Program.cs uses that configuration and migrations are applied:
+   - Open TaskManagerApp/Program.cs and check calls to AddDbContext and if Database.Migrate() is invoked.
+
+4) Confirm you're calling the same app instance:
+   - Check the URL/port in Postman matches the running app's launch profile (launchSettings.json) or console output.
+
+5) Quick temporary endpoints for debugging (only for dev):
+   - Add GET /api/debug/users and GET /api/debug/tasks to return current DB rows.
+
+6) Check if you seeded data earlier and if it ran against a different DB (common when using LocalDB vs SQL Server instance).
+
+7) If using EF migrations, list applied migrations:
+   dotnet ef migrations list --project TaskManagerApp
+
+8) If nothing found, seed a user and a task (development only):
+   INSERT INTO Users (FullName, Email, PasswordHash, CreatedAt) VALUES ('Dev','dev@local','hash', GETDATE());
+   SELECT SCOPE_IDENTITY(); -- get new user id
+   INSERT INTO Tasks (Title, Description, Status, CreatedAt, UserId) VALUES ('Tarea seed','Seed',0, GETDATE(), <newUserId>);
+
+9) Logs: enable console logging and check request logs; add logging to TaskService.CreateTaskAsync and UpdateTaskAsync to record incoming ids.
+
+10) Example curl to reproduce PUT correctly:
+   curl -X PUT "https://localhost:7038/api/tasks/1" -H "Content-Type: application/json" -d '{"title":"Tarea actualizada","description":"Modificada","status":2,"userId":1}' -k
+
+Follow these steps and report back outputs (connection string, results of SELECTs, Program.cs relevant lines).

@@ -25,6 +25,11 @@ namespace TaskManagerApp.Services
         // Crear tarea
         public async Task CreateTaskAsync(TaskItem task)
         {
+            // Validar que el usuario exista antes de intentar guardar
+            var userExists = await _context.Users.AnyAsync(u => u.Id == task.UserId);
+            if (!userExists)
+                throw new ArgumentException($"UserId {task.UserId} no existe.", nameof(task.UserId));
+
             _context.Tasks.Add(task);
             await _context.SaveChangesAsync();
         }
